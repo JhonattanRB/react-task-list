@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Checkbox,
   Text,
@@ -9,27 +10,43 @@ import {
 } from "@chakra-ui/react";
 
 export const TaskCard = (props) => {
-  const { name, completed, onCheckEdittask, onCheckDeletetask } = props;
+  const { textask, onEditTask, onDeleteTask, onCheckedTask, isCheckedTask } =
+    props;
+
+  /*const [isChecked, setIsChecked] =
+    useState(false); hook to keep track of the checkbox's checked state*/
+
+  const handleCheckboxClick = () => {
+    //setIsChecked(!isChecked);
+    console.log("Task " + textask + " checked");
+    onCheckedTask(textask);
+  }; /*use handle name like a prefix in fuctions that responses an event*/
 
   const handleEditTask = () => {
-    console.log("Task " + name + " edited");
-    onCheckEdittask(name);
+    console.log("Task " + textask + " edited");
+    onEditTask(textask);
   }; /*use handle name like a prefix in fuctions that responses an event*/
 
   const handleDeleteTask = () => {
-    console.log("Task " + name + " deleted");
-    onCheckDeletetask(name);
+    console.log("Task " + textask + " deleted");
+    onDeleteTask(textask);
   };
 
   return (
     <div>
       <Flex alignItems="center" gap="2">
         <Box>
-          <Checkbox type="checkbox" isChecked={completed}>
+          <Checkbox
+            type="checkbox"
+            isChecked={isCheckedTask}
+            onChange={handleCheckboxClick}
+          >
             <Text
-              style={{ textDecoration: completed ? "line-through" : "none" }}
+              style={{
+                textDecoration: isCheckedTask ? "line-through" : "none",
+              }}
             >
-              {name}{" "}
+              {textask}{" "}
             </Text>
           </Checkbox>
         </Box>
