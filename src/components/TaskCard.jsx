@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Checkbox,
   Text,
@@ -6,12 +5,10 @@ import {
   ButtonGroup,
   Flex,
   Box,
-  Center,
 } from "@chakra-ui/react";
 
 export const TaskCard = (props) => {
-  const { textask, onEditTask, onDeleteTask, onCheckedTask, isCheckedTask } =
-    props;
+  const { textask, onDeleteTask, onCheckedTask, isCheckedTask } = props;
 
   /*const [isChecked, setIsChecked] =
     useState(false); hook to keep track of the checkbox's checked state*/
@@ -24,8 +21,8 @@ export const TaskCard = (props) => {
 
   const handleEditTask = () => {
     console.log("Task " + textask + " edited");
-    onEditTask(textask);
-  }; /*use handle name like a prefix in fuctions that responses an event*/
+    //onEditTask(textask);
+  };
 
   const handleDeleteTask = () => {
     console.log("Task " + textask + " deleted");
