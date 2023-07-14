@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Checkbox,
   Text,
@@ -5,51 +6,61 @@ import {
   ButtonGroup,
   Flex,
   Box,
+  Input,
 } from "@chakra-ui/react";
 
 export const TaskCard = (props) => {
-  const { textask, onDeleteTask, onCheckedTask, isCheckedTask } = props;
-
-  /*const [isChecked, setIsChecked] =
-    useState(false); hook to keep track of the checkbox's checked state*/
+  const { task, onDeleteTask, onCheckTask, onEditTask } = props;
+  const [isEditing, setIsEditing] = useState(false);
+  const [editInput, setEditInput] = useState(task.task);
 
   const handleCheckboxClick = () => {
-    //setIsChecked(!isChecked);
-    console.log("Task " + textask + " checked");
-    onCheckedTask(textask);
-  }; /*use handle name like a prefix in fuctions that responses an event*/
-
-  const handleEditTask = () => {
-    console.log("Task " + textask + " edited");
-    //onEditTask(textask);
+    console.log("Task " + task.task + " checked");
+    onCheckTask(task.id);
   };
 
   const handleDeleteTask = () => {
-    console.log("Task " + textask + " deleted");
-    onDeleteTask(textask);
+    console.log("Task " + task.task + " deleted");
+    onDeleteTask(task.id);
+  };
+
+  const handleEditTask = () => {
+    if (isEditing) {
+      onEditTask(task.id, editInput);
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const handleInputChange = (event) => {
+    setEditInput(event.target.value);
   };
 
   return (
     <div>
       <Flex alignItems="center" gap="2">
         <Box>
-          <Checkbox
-            type="checkbox"
-            isChecked={isCheckedTask}
-            onChange={handleCheckboxClick}
-          >
-            <Text
-              style={{
-                textDecoration: isCheckedTask ? "line-through" : "none",
-              }}
+          {/* Toggle between a Checkbox and an Input depending on isEditing */}
+          {isEditing ? (
+            <Input type="text" value={editInput} onChange={handleInputChange} />
+          ) : (
+            <Checkbox
+              type="checkbox"
+              isChecked={task.checked}
+              onChange={handleCheckboxClick}
             >
-              {textask}{" "}
-            </Text>
-          </Checkbox>
+              <Text
+                style={{
+                  textDecoration: task.checked ? "line-through" : "none",
+                }}
+              >
+                {task.task}
+              </Text>
+            </Checkbox>
+          )}
         </Box>
         <ButtonGroup spacing="2" p={1}>
-          <Button onClick={handleEditTask} size="2rem">
-            Edit
+          <Button onClick={handleEditTask} h="2rem">
+            {isEditing ? "Save" : "Edit"}
           </Button>
           <Button onClick={handleDeleteTask} h="2rem">
             Delete

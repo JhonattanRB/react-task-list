@@ -2,39 +2,36 @@ import "./App.css";
 import { Header } from "./components/Header";
 import { TaskCounter } from "./components/TaskCounter";
 import { TaskList } from "./components/TaskList";
-import { useChecked } from "./hooks/useChecked";
-import { useDeleteTask } from "./hooks/useDeleteTask";
-import { useAddTask } from "./hooks/useAddTask";
-
-const arraylist = [
-  { textask: "Complete React ToDo App" },
-  { textask: "Do strenght work in the gym" },
-  { textask: "Read the book: The Subtle art of Not Giving a Fuck" },
-  { textask: "Complete an inform about Cellular Signal in Medellin" },
-];
+import { useTasks } from "./hooks/useTasks";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [checkedTasks, addCheckedTask] = useChecked();
-  const [tasks, deleteTask] = useDeleteTask(arraylist);
-  const [newTasks, addTask] = useAddTask();
-  const totalTasks = tasks.length;
+  const { tasks, addTask, deleteTask, checkTask, editTask, dataLoaded } =
+    useTasks();
 
   const handleAddTask = (newTask) => {
-    addTask({ textask: newTask });
+    const task = {
+      id: uuidv4(),
+      task: newTask,
+      checked: false,
+    };
+    addTask(task);
   };
+
+  if (!dataLoaded) {
+    return <div>Loading...</div>; // O alguna otra cosa que indique que los datos se están cargando
+  }
 
   return (
     <div className="App">
-      <Header
-        onAddTask={handleAddTask} //// Pasar la función handleAddTask al componente Header
-      />
+      <Header onAddTask={handleAddTask} />
       <TaskList
-        list={[...tasks, ...newTasks]} // Combine the current tasks with the new tasks
-        onCheckedTask={addCheckedTask}
+        tasks={tasks}
+        onCheckTask={checkTask}
         onDeleteTask={deleteTask}
-        checkedTasks={checkedTasks}
+        onEditTask={editTask}
       />
-      <TaskCounter checkedTasks={checkedTasks} totalTasks={totalTasks} />
+      <TaskCounter tasks={tasks} />
     </div>
   );
 }

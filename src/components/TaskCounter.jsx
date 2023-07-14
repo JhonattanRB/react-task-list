@@ -1,21 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
-export const TaskCounter = (props) => {
-  const { checkedTasks, totalTasks } = props;
-
-  /*const remainingTasks = tasks.filter(
-    (task) => !checkedTasks.includes(task.textask)
-  );*/
+export const TaskCounter = ({ tasks }) => {
+  const checkedTasksCount = tasks.filter((task) => task.checked).length;
 
   return (
-    <Box
-      checkedtask={checkedTasks.length}
-      color="teal"
-      pt={9}
-      pl="45rem"
-      pr="16rem"
-    >
-      Number of Completed Tasks: {checkedTasks.length} of {totalTasks}
+    <Box color="teal" pt={9} pl="45rem" pr="16rem">
+      Number of Completed Tasks: {checkedTasksCount} of {tasks.length}
     </Box>
   );
 };

@@ -1,18 +1,39 @@
-import { Heading, Input, Button, Flex, Box, HStack } from "@chakra-ui/react";
+import {
+  Heading,
+  Input,
+  Button,
+  Flex,
+  Box,
+  HStack,
+  FormControl,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
 export const Header = (props) => {
-  const [taskInput, setTaskInput] = useState(""); // Estado para almacenar el valor del input
+  const [taskInput, setTaskInput] = useState("");
+  const [formValidation, setFormValidation] = useState({
+    taskInput: undefined,
+  });
+
   const handleInputChange = (event) => {
-    setTaskInput(event.target.value);
+    const value = event.target.value;
+    setTaskInput(value);
+
+    setFormValidation({
+      ...formValidation,
+      taskInput: value.length < 3 ? "task must be above 3 characters" : "",
+    });
   };
 
   const handleAddTask = () => {
     if (taskInput.trim() !== "") {
-      props.onAddTask(taskInput); // Llamar a la función onAddTask pasando el valor del input
-      setTaskInput(""); // Limpiar el valor del input después de agregar la tarea
+      props.onAddTask(taskInput);
+      setTaskInput("");
     }
   };
+
+  const isFormValid = formValidation.taskInput === "";
 
   return (
     <div>
@@ -24,20 +45,28 @@ export const Header = (props) => {
         </Box>
         <HStack pt={5} pl="25rem" pr="15rem">
           <Box>
-            <Input
-              type="text"
-              h="2rem"
-              width="25rem"
-              bgColor="white"
-              border="1.5px solid gray"
-              focusBorderColor="blue.400"
-              placeholder="Add a task"
-              value={taskInput} // Asignar el valor del input al estado taskInput
-              onChange={handleInputChange} // Asignar la función handleInputChange al evento onChange del input
-            />
+            <FormControl isInvalid={!!formValidation.taskInput}>
+              <Input
+                type="text"
+                h="2rem"
+                width="25rem"
+                bgColor="white"
+                border="1.5px solid gray"
+                focusBorderColor="blue.400"
+                placeholder="Add a task"
+                value={taskInput}
+                onChange={handleInputChange}
+              />
+              <FormErrorMessage>{formValidation.taskInput}</FormErrorMessage>
+            </FormControl>
           </Box>
           <Box p={1}>
-            <Button colorScheme="teal" h="2rem" onClick={handleAddTask}>
+            <Button
+              colorScheme="teal"
+              h="2rem"
+              onClick={handleAddTask}
+              disabled={!isFormValid}
+            >
               Add
             </Button>
           </Box>
