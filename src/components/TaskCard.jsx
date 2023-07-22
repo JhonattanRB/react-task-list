@@ -27,6 +27,7 @@ export const TaskCard = (props) => {
   const handleEditTask = () => {
     if (isEditing) {
       onEditTask(task.id, editInput);
+      console.log("Task " + task.task + " edited");
     }
     setIsEditing(!isEditing);
   };
@@ -47,6 +48,7 @@ export const TaskCard = (props) => {
               type="checkbox"
               isChecked={task.checked}
               onChange={handleCheckboxClick}
+              borderColor="gray.500" // added border color
             >
               <Text
                 style={{
@@ -59,10 +61,10 @@ export const TaskCard = (props) => {
           )}
         </Box>
         <ButtonGroup spacing="2" p={1}>
-          <Button onClick={handleEditTask} h="2rem">
+          <Button onClick={handleEditTask} h="2rem" shadow="md">
             {isEditing ? "Save" : "Edit"}
           </Button>
-          <Button onClick={handleDeleteTask} h="2rem">
+          <Button onClick={handleDeleteTask} h="2rem" shadow="md">
             Delete
           </Button>
         </ButtonGroup>

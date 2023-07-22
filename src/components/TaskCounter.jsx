@@ -5,7 +5,8 @@ export const TaskCounter = ({ tasks }) => {
 
   return (
     <Box color="teal" pt={9} pl="45rem" pr="16rem">
-      Number of Completed Tasks: {checkedTasksCount} of {tasks.length}
+      You have completed <strong>{checkedTasksCount}</strong> of{" "}
+      <strong>{tasks.length}</strong> tasks.
     </Box>
   );
 };

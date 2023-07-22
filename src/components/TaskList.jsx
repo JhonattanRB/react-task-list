@@ -6,7 +6,7 @@ export const TaskList = (props) => {
 
   return (
     <Flex align="center" justify="center" direction="column">
-      <Box pt={5} pl="25rem" pr="15rem">
+      <Box pt={5} pl={5} pr={5}>
         <ul>
           {tasks.map((task) => (
             <TaskCard
