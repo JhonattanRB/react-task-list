@@ -7,11 +7,22 @@ import {
   HStack,
   FormControl,
   FormErrorMessage,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
 export const Header = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [taskInput, setTaskInput] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
   const [formValidation, setFormValidation] = useState({
     taskInput: undefined,
   });
@@ -26,10 +37,17 @@ export const Header = (props) => {
     });
   };
 
+  const handleDescriptionChange = (event) => {
+    const value = event.target.value;
+    setTaskDescription(value);
+  };
+
   const handleAddTask = () => {
     if (taskInput.trim() !== "") {
-      props.onAddTask(taskInput);
+      props.onAddTask(taskInput, taskDescription);
       setTaskInput("");
+      setTaskDescription("");
+      onClose();
     }
   };
 
@@ -37,40 +55,55 @@ export const Header = (props) => {
 
   return (
     <div>
-      <Flex align="center" justify="center" direction="column">
+      <Flex align="center" direction="column">
         <Box>
-          <Heading as="h2" pl="25rem" pt="10rem" pr="15rem">
+          <Heading as="h2" p={5}>
             ToDo App
           </Heading>
         </Box>
-        <HStack pt={5} pl="25rem" pr="15rem">
+        <HStack p={3}>
           <Box>
-            <FormControl isInvalid={!!formValidation.taskInput}>
-              <Input
-                type="text"
-                h="2rem"
-                width="25rem"
-                bgColor="white"
-                border="1.5px solid gray"
-                focusBorderColor="blue.400"
-                placeholder="Add a task"
-                value={taskInput}
-                onChange={handleInputChange}
-              />
-              <FormErrorMessage>{formValidation.taskInput}</FormErrorMessage>
-            </FormControl>
-          </Box>
-          <Box p={1}>
-            <Button
-              colorScheme="teal"
-              h="2rem"
-              onClick={handleAddTask}
-              disabled={!isFormValid}
-            >
-              Add
+            <Button colorScheme="teal" h="2rem" onClick={onOpen}>
+              Add New Task
             </Button>
           </Box>
         </HStack>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Add a new task</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl isInvalid={!!formValidation.taskInput}>
+                <Input
+                  placeholder="Add a task"
+                  value={taskInput}
+                  onChange={handleInputChange}
+                />
+                <FormErrorMessage>{formValidation.taskInput}</FormErrorMessage>
+                <Textarea
+                  mt={4}
+                  placeholder="Add a description (optional)"
+                  value={taskDescription}
+                  onChange={handleDescriptionChange}
+                />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={handleAddTask}
+                disabled={!isFormValid}
+              >
+                Add
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Flex>
     </div>
   );

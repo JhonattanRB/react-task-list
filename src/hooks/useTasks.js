@@ -1,4 +1,3 @@
-//hook unificado
 import { useState, useEffect } from "react";
 
 export function useTasks() {
@@ -41,10 +40,12 @@ export function useTasks() {
     );
   }
 
-  function editTask(taskId, newTask) {
+  function editTask(taskId, newTask, newDescription) {
     setTasks((oldTasks) =>
       oldTasks.map((task) =>
-        task.id === taskId ? { ...task, task: newTask } : task
+        task.id === taskId
+          ? { ...task, task: newTask, description: newDescription }
+          : task
       )
     );
   }

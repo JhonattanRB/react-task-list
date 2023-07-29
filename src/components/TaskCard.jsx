@@ -13,6 +13,7 @@ export const TaskCard = (props) => {
   const { task, onDeleteTask, onCheckTask, onEditTask } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [editInput, setEditInput] = useState(task.task);
+  const [editDescription, setEditDescription] = useState(task.description);
 
   const handleCheckboxClick = () => {
     console.log("Task " + task.task + " checked");
@@ -26,7 +27,7 @@ export const TaskCard = (props) => {
 
   const handleEditTask = () => {
     if (isEditing) {
-      onEditTask(task.id, editInput);
+      onEditTask(task.id, editInput, editDescription);
       console.log("Task " + task.task + " edited");
     }
     setIsEditing(!isEditing);
@@ -36,35 +37,62 @@ export const TaskCard = (props) => {
     setEditInput(event.target.value);
   };
 
+  const handleDescriptionChange = (event) => {
+    setEditDescription(event.target.value);
+  };
+
   return (
     <div>
       <Flex alignItems="center" gap="2">
-        <Box>
-          {/* Toggle between a Checkbox and an Input depending on isEditing */}
+        <Box w="300px" h="75px" overflow="auto">
           {isEditing ? (
-            <Input type="text" value={editInput} onChange={handleInputChange} />
+            <>
+              <Input
+                type="text"
+                value={editInput}
+                onChange={handleInputChange}
+              />
+              <Input
+                type="text"
+                value={editDescription}
+                onChange={handleDescriptionChange}
+              />
+            </>
           ) : (
             <Checkbox
               type="checkbox"
               isChecked={task.checked}
               onChange={handleCheckboxClick}
-              borderColor="gray.500" // added border color
+              borderColor="gray.500"
             >
-              <Text
+              <Box
                 style={{
                   textDecoration: task.checked ? "line-through" : "none",
                 }}
               >
-                {task.task}
-              </Text>
+                <Text>{task.task}</Text>
+                <Text>{task.description}</Text>
+              </Box>
             </Checkbox>
           )}
         </Box>
         <ButtonGroup spacing="2" p={1}>
-          <Button onClick={handleEditTask} h="2rem" shadow="md">
-            {isEditing ? "Save" : "Edit"}
-          </Button>
-          <Button onClick={handleDeleteTask} h="2rem" shadow="md">
+          {!task.checked && (
+            <Button
+              onClick={handleEditTask}
+              h="2rem"
+              shadow="md"
+              boxShadow="1px 2px 1px #008080"
+            >
+              {isEditing ? "Save" : "Edit"}
+            </Button>
+          )}
+          <Button
+            onClick={handleDeleteTask}
+            h="2rem"
+            shadow="md"
+            boxShadow="1px 2px 1px #008080"
+          >
             Delete
           </Button>
         </ButtonGroup>

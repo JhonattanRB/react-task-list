@@ -1,24 +1,27 @@
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Box, VStack } from "@chakra-ui/react";
 import { TaskCard } from "./TaskCard";
 
 export const TaskList = (props) => {
   const { tasks, onCheckTask, onDeleteTask, onEditTask } = props;
 
   return (
-    <Flex align="center" justify="center" direction="column">
-      <Box pt={5} pl={5} pr={5}>
-        <ul>
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onDeleteTask={onDeleteTask}
-              onCheckTask={onCheckTask}
-              onEditTask={onEditTask}
-            />
-          ))}
-        </ul>
-      </Box>
-    </Flex>
+    <VStack spacing={4} align="stretch">
+      {tasks.map((task) => (
+        <Box
+          p={5}
+          shadow="md"
+          borderWidth="1px"
+          key={task.id}
+          backgroundColor="gray.100"
+        >
+          <TaskCard
+            task={task}
+            onDeleteTask={onDeleteTask}
+            onCheckTask={onCheckTask}
+            onEditTask={onEditTask}
+          />
+        </Box>
+      ))}
+    </VStack>
   );
 };

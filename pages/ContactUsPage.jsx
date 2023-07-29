@@ -115,7 +115,7 @@ export function ContactUsPage() {
             p={5}
             borderWidth={1}
             borderRadius="lg"
-            bg="gray.800"
+            bg="gray.700"
             m={5}
           >
             <Box onSubmit={handleSubmit}>

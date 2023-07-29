@@ -5,16 +5,17 @@ import { TaskCounter } from "../src/components/TaskCounter";
 import { useTasks } from "../src/hooks/useTasks";
 import { v4 as uuidv4 } from "uuid";
 import { Link as RouterLink } from "react-router-dom";
-import { Box, Flex, Spacer, Button } from "@chakra-ui/react";
+import { Flex, Spacer, Button, Box, VStack } from "@chakra-ui/react";
 
 export function TaskAppPage() {
   const { tasks, addTask, deleteTask, checkTask, editTask, dataLoaded } =
     useTasks();
 
-  const handleAddTask = (newTask) => {
+  const handleAddTask = (newTask, newDescription) => {
     const task = {
       id: uuidv4(),
       task: newTask,
+      description: newDescription,
       checked: false,
     };
     addTask(task);
@@ -27,8 +28,8 @@ export function TaskAppPage() {
   return (
     <div className="App">
       <Box
-        backgroundColor="gray.10" // light gray background color
-        h="100vh"
+        backgroundColor="gray.10"
+        // light gray background color
       >
         <Flex p={5} position="absolute" right={10}>
           <Spacer />
@@ -40,14 +41,20 @@ export function TaskAppPage() {
             Contact Us
           </Button>
         </Flex>
-        <Header onAddTask={handleAddTask} />
-        <TaskList
-          tasks={tasks}
-          onCheckTask={checkTask}
-          onDeleteTask={deleteTask}
-          onEditTask={editTask}
-        />
-        <TaskCounter tasks={tasks} />
+      </Box>
+      <Box>
+        <VStack align="center" pt={100} pl={400} pr={400}>
+          <Header onAddTask={handleAddTask} />
+
+          <TaskList
+            tasks={tasks}
+            onCheckTask={checkTask}
+            onDeleteTask={deleteTask}
+            onEditTask={editTask}
+          />
+
+          <TaskCounter tasks={tasks} />
+        </VStack>
       </Box>
     </div>
   );

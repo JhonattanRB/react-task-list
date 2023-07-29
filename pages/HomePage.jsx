@@ -47,8 +47,8 @@ export function HomePage() {
               pl={40}
               pr={40}
             >
-              Keep track of your work, your defects, your chores... your life,
-              all in one place!
+              Keep track of your work, your chores... your life, all in one
+              place!
             </Heading>
             <Text
               fontSize="xl"
@@ -65,6 +65,18 @@ export function HomePage() {
             <Button as={RouterLink} to="/task-app" colorScheme="teal">
               Try it free
             </Button>
+            <Spacer />
+            <Text
+              fontSize="sm"
+              color="black"
+              textAlign="center"
+              letterSpacing="wider"
+              pt={40}
+              pl={40}
+              pr={40}
+            >
+              Application made in React+Vite.
+            </Text>
           </VStack>
         </Box>
       </Flex>
